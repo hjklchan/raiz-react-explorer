@@ -12,8 +12,15 @@ export function Selection(props: SelectionProps) {
   const formContext = useFormContext();
 
   useEffect(() => {
-    console.log("Selection component: ", formContext.form.getFields());
-  }, []);
+    console.log(`Selection[${props.field.name}] has been reloaded, `);
+
+    if (props.field.dependsOn) {
+      console.log(
+        `${props.field.dependsOn}'s value being: `,
+        formContext.form.getFieldValue(props.field.dependsOn)
+      );
+    }
+  });
 
   return (
     <Select

@@ -6,11 +6,17 @@ export interface Field {
   label?: string;
 }
 
-export interface VarcharField extends Field {
+export interface RaizInputElement {}
+export interface RaizSelectElement {
+  dependsOn?: string;
+}
+
+// Inherit HTMLInputElement
+export interface VarcharField extends Field, RaizInputElement {
   type: "varchar";
 }
 
-export interface SelectionField extends Field {
+export interface SelectionField extends Field, RaizSelectElement {
     type: "selection";
     options?: SelectProps["options"];
 }

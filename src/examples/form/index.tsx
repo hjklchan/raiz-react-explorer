@@ -10,7 +10,7 @@ import {
 import { Varchar } from "./components/Varchar";
 import { Selection } from "./components/Selection";
 import useForm from "@arco-design/web-react/es/Form/useForm";
-import { Field, RaizField } from "./types";
+import { RaizField, RaizSelectElement, SelectionField } from "./types";
 
 export default function () {
   const [form] = useForm();
@@ -30,6 +30,22 @@ export default function () {
           value: "cancel",
         },
       ],
+    },
+    {
+      type: "selection",
+      name: "shipment_status",
+      label: "Shipment Status",
+      options: [
+        {
+          label: "Shipped",
+          value: "shipped",
+        },
+        {
+          label: "Waiting",
+          value: "waiting",
+        },
+      ],
+      dependsOn: "status",
     },
   ]);
 
@@ -54,12 +70,12 @@ export default function () {
     return dict;
   };
 
-  const formInitialization = useMemo(() => {
+  const formInitialValues = useMemo(() => {
     return toDictValues(fields, (_) => "");
   }, []);
 
   return (
-    <Form form={form} initialValues={formInitialization}>
+    <Form form={form} initialValues={formInitialValues}>
       {fields.map((field) => {
         const label =
           field.label ??

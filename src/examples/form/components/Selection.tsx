@@ -32,8 +32,8 @@ export function Selection(props: SelectionProps) {
   return (
     <Select
       options={
-        checkProxy(checkDependency, (f, b) => {
-          console.log(f, b);
+        checkProxy(checkDependency, (_f, b) => {
+          // console.log(_f, b);
           return b;
         })
           ? props.field.options

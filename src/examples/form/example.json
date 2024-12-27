@@ -51,5 +51,11 @@
         "name": "currency",
         "model": "Currency",
         "dependsOn": "layout"
+    },
+    {
+        "type": "many2one",
+        "name": "category",
+        "model": "Category",
+        "dependsOn": "currency"
     }
   ]

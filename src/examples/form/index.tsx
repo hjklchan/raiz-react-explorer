@@ -1,5 +1,4 @@
 import {
-  Alert,
   Button,
   Form,
   Input,
@@ -22,7 +21,7 @@ import { RaizField } from "./types";
 import example_json from "./example.json";
 import Many2one from "./components/Many2one";
 
-export default function () {
+function Index() {
   const [form] = useForm();
   const [fields, _] = useState<RaizField[]>(example_json as RaizField[]);
 
@@ -115,7 +114,7 @@ export default function () {
                 // 则该字段会被重新渲染一次
                 shouldUpdate={field.dependsOn !== undefined}
               >
-                <Many2one field={field} />
+                <Many2one field={field} onChange={(f, v) => onChange(f, v)} />
               </Form.Item>
             );
           // Handle Boolean field
@@ -171,7 +170,7 @@ export default function () {
       </Form.Item>
     </Form>
   );
-}
+};
 
 export interface FormProviderProps {
   fields: RaizField[];
@@ -242,3 +241,5 @@ export function FormProvider(props: FormProviderProps) {
     </FormContext.Provider>
   );
 }
+
+export default Index;

@@ -1,5 +1,7 @@
-import { SelectProps } from "@arco-design/web-react";
+import { Card, SelectProps } from "@arco-design/web-react";
 import Form from "./examples/form";
+import Row from "@arco-design/web-react/es/Grid/row";
+import Col from "@arco-design/web-react/es/Grid/col";
 
 function App() {
   const formFields = [
@@ -46,7 +48,20 @@ function App() {
     },
   ];
 
-  return <Form />;
+  return (
+    <div style={{ width: "100%" }} className="grid-demo-background">
+      <Row className="grid-demo" style={{ marginBottom: 16 }}>
+        <Col span={12}>
+          <div>12 - 50%</div>
+        </Col>
+        <Col span={12}>
+          <Card style={{height: "100vh"}}>
+            <Form />
+          </Card>
+        </Col>
+      </Row>
+    </div>
+  );
 }
 
 export default App;
@@ -99,7 +114,7 @@ function parseExpr(expr: string | string[]) {
     let left = arrayExpr[0];
     let middle = arrayExpr[1];
     let right = arrayExpr[2];
-  
+
     console.log(left, middle, right);
   } else {
     throw new Error("Invalid expr type");

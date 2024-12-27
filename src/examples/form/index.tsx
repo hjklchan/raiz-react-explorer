@@ -21,6 +21,7 @@ import { RaizField } from "./types";
 import example_json from "./example.json";
 import Many2one from "./components/Many2one";
 
+// FIXME - Could not Fast Refresh ("useFormContext" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
 function Index() {
   const [form] = useForm();
   const [fields, _] = useState<RaizField[]>(example_json as RaizField[]);

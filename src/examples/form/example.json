@@ -1,4 +1,5 @@
-[
+{
+  "fields": [
     { "type": "varchar", "name": "username" },
     {
       "type": "selection",
@@ -59,3 +60,4 @@
         "dependsOn": "currency"
     }
   ]
+}

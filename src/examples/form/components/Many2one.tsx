@@ -6,10 +6,11 @@ import { HtmlAdapters } from "../../utils/adapter";
 
 interface Many2oneProps {
   field: Many2oneField;
+  onChange: (field: string, value: any) => void;
 }
 
 const Many2one = (props: Many2oneProps) => {
-  const { dependsOn } = props.field;
+  const { name, dependsOn } = props.field;
   const { form } = useFormContext();
   const [loading, setLoading] = useState(false);
   const [options, setOptions] = useState<SelectProps["options"]>([]);
@@ -26,9 +27,12 @@ const Many2one = (props: Many2oneProps) => {
         return resp.json();
       })
       .then((json) => {
-        const options = HtmlAdapters.Select.toOptions<any>(json.results, (from) => {
-          return { label: from.name.last, value: from.name.last };
-        });
+        const options = HtmlAdapters.Select.toOptions<any>(
+          json.results,
+          (from) => {
+            return { label: from.name.last, value: from.name.last };
+          }
+        );
 
         setOptions(options);
       })
@@ -82,6 +86,7 @@ const Many2one = (props: Many2oneProps) => {
       }}
       options={options}
       loading={loading}
+      onChange={(value, _) => props.onChange(name, value)}
     />
   );
 };

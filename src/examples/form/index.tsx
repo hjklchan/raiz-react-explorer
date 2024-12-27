@@ -27,7 +27,7 @@ export default function () {
   const [fields, _] = useState<RaizField[]>(example_json as RaizField[]);
 
   useEffect(() => {
-    console.log("Index has been reloaded");
+    console.log("Index has been (re-)loaded");
   }, []);
 
   const onChange = useCallback((f: string, v: any) => {
@@ -79,11 +79,18 @@ export default function () {
             );
           // Handle Selection field
           case "selection":
+            var help = () => {
+              if (field.dependsOn) {
+                return `存在依赖字段 ${field.dependsOn}`;
+              }
+            };
+
             return (
               <Form.Item
                 key={field.name}
                 label={label}
                 field={field.name}
+                help={help()}
                 // 如果存在依赖字段
                 // 则该字段会被重新渲染一次
                 shouldUpdate={field.dependsOn !== undefined}
@@ -91,19 +98,26 @@ export default function () {
                 <Selection field={field} onChange={(f, v) => onChange(f, v)} />
               </Form.Item>
             );
-    case "many2one":
-        return (
+          case "many2one":
+            var help = () => {
+              if (field.dependsOn) {
+                return `存在依赖字段 ${field.dependsOn}`;
+              }
+            };
+
+            return (
               <Form.Item
                 key={field.name}
                 label={label}
                 field={field.name}
+                help={help()}
                 // 如果存在依赖字段
                 // 则该字段会被重新渲染一次
                 shouldUpdate={field.dependsOn !== undefined}
               >
                 <Many2one field={field} />
               </Form.Item>
-        )
+            );
           // Handle Boolean field
           case "boolean":
             return (

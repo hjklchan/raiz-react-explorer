@@ -16,13 +16,7 @@ export namespace HtmlAdapters {
       data: T[],
       map: (value: T) => Option
     ): Option[] {
-      let options: Option[] = [];
-
-      data.forEach((value) => {
-        options.push(map(value));
-      });
-
-      return options;
+      return data.map<Option>(map);
     }
   }
 }

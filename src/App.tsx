@@ -1,62 +1,56 @@
-import { Card, SelectProps } from "@arco-design/web-react";
-import Form from "./examples/form";
+import { Card, Input, SelectProps, Typography } from "@arco-design/web-react";
+import { ExampleForm as Form } from "./examples/form";
 import Row from "@arco-design/web-react/es/Grid/row";
 import Col from "@arco-design/web-react/es/Grid/col";
+import example_json from "./examples/form/example.json";
+import { useEffect, useState } from "react";
+import { useDebounce } from "ahooks";
 
 function App() {
-  const formFields = [
-    {
-      type: "selection",
-      name: "country",
-      label: "Country",
-      options: [
-        {
-          label: "China",
-          value: "china",
-        },
-        {
-          label: "Japan",
-          value: "japan",
-        },
-        {
-          label: "Singapore",
-          value: "singapore",
-        },
-      ],
-    },
-    {
-      type: "selection",
-      name: "province",
-      label: "Province",
-      dependsOn: {
-        lookupField: "country",
-      },
-      options: [
-        {
-          label: "Guangdong",
-          value: "guangdong",
-        },
-        {
-          label: "Guangxi",
-          value: "guangxi",
-        },
-        {
-          label: "Hangzhou",
-          value: "hangzhou",
-        },
-      ],
-    },
-  ];
+  const [stringifyFields, setStringifyFields] = useState<string | undefined>();
+  const [fields, setFields] = useState<RaizField[]>(example_json.fields as RaizField[]);
+
+  useEffect(() => {
+    setStringifyFields(JSON.stringify(example_json));
+  }, []);
+
+  const debounceValue = useDebounce(stringifyFields, {
+  });
+
+  useEffect(() => {
+    if (debounceValue) {
+      const formData = JSON.parse(debounceValue);
+      console.log(formData.fields);
+      
+      setFields(formData.fields);
+    }
+  }, [debounceValue]);
+
+  // const stringValueToJson = (stringValue: string) => {
+  //   const json = JSON.parse(stringValue);
+  //   console.log(json);
+
+  //   return json;
+  // }
+
+  // stringValueToJson(debounceValue);
 
   return (
-    <div style={{ width: "100%" }} className="grid-demo-background">
-      <Row className="grid-demo" style={{ marginBottom: 16 }}>
+    <div style={{ width: "100%" }}>
+      <Row className="grid-demo" style={{ marginBottom: 16 }} gutter={24}>
         <Col span={12}>
-          <div>12 - 50%</div>
+          <Card style={{ height: "50vh" }}>
+            <Input.TextArea
+              value={stringifyFields}
+              onChange={(value, _) => setStringifyFields(value)}
+              autoSize
+            />
+          </Card>
         </Col>
         <Col span={12}>
-          <Card style={{height: "100vh"}}>
-            <Form />
+          <Card style={{ height: "100%" }}>
+            <Typography.Title heading={3}>动态表单字段</Typography.Title>
+            <Form fields={fields} />
           </Card>
         </Col>
       </Row>

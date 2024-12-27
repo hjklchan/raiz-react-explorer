@@ -1,7 +1,7 @@
-import { Select, SelectProps } from "@arco-design/web-react";
+import { Select } from "@arco-design/web-react";
 import { SelectionField } from "../types";
 import useFormContext from "@arco-design/web-react/es/Form/hooks/useContext";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 interface SelectionProps {
   field: SelectionField;

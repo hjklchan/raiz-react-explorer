@@ -18,13 +18,16 @@ import { Varchar } from "./components/Varchar";
 import { Selection } from "./components/Selection";
 import useForm from "@arco-design/web-react/es/Form/useForm";
 import { RaizField } from "./types";
-import example_json from "./example.json";
 import Many2one from "./components/Many2one";
 
+interface FormProps {
+  fields: RaizField[];
+}
+
 // FIXME - Could not Fast Refresh ("useFormContext" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
-function Index() {
+export function ExampleForm(props: FormProps) {
   const [form] = useForm();
-  const [fields, _] = useState<RaizField[]>(example_json as RaizField[]);
+  const [fields, _] = useState<RaizField[]>(props.fields);
 
   useEffect(() => {
     console.log("Index has been (re-)loaded");
@@ -172,75 +175,3 @@ function Index() {
     </Form>
   );
 };
-
-export interface FormProviderProps {
-  fields: RaizField[];
-}
-
-export interface FormContextProps {
-  events?: {
-    onFieldChange?: (field: string, value: any) => void;
-  };
-}
-
-const FormContext = createContext<FormContextProps>({});
-
-export function useFormContext() {
-  const ctx = useContext(FormContext);
-
-  if (ctx) return ctx;
-
-  throw new Error("FormContext does not exist");
-}
-
-export function FormProvider(props: FormProviderProps) {
-  const [values, setValues] = useState<{ [field: string]: string }>({});
-
-  function toDictValues(fields: Pick<RaizField, "name">[]) {
-    let dict: { [field: string]: "" } = {};
-
-    fields.forEach((field) => {
-      dict[field.name] = "";
-    });
-
-    return dict;
-  }
-
-  function initialValues() {
-    return toDictValues(props.fields);
-  }
-
-  useEffect(() => {
-    setValues(toDictValues(props.fields));
-  }, []);
-
-  const onFieldChange = useCallback((field: string, value: any) => {
-    console.log(`${field} has been changed to ${value}`);
-
-    setValues((pre) => {
-      pre[field] = value;
-      return pre;
-    });
-  }, []);
-
-  const contextValues: FormContextProps = {
-    events: {
-      onFieldChange,
-    },
-  };
-
-  return (
-    <FormContext.Provider value={contextValues}>
-      <Form initialValues={initialValues()}>
-        {props.fields.map((field) => {
-          switch (field.type) {
-            case "varchar":
-              return <Varchar key={field.name} field={field} />;
-          }
-        })}
-      </Form>
-    </FormContext.Provider>
-  );
-}
-
-export default Index;

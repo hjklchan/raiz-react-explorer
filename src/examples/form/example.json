@@ -1,0 +1,55 @@
+[
+    { "type": "varchar", "name": "username" },
+    {
+      "type": "selection",
+      "name": "status",
+      "options": [
+        {
+          "label": "Open",
+          "value": "open"
+        },
+        {
+          "label": "Cancel",
+          "value": "cancel"
+        }
+      ]
+    },
+    {
+      "type": "selection",
+      "name": "layout",
+      "options": [
+        {
+          "label": "ModalForm",
+          "value": "model_form"
+        },
+        {
+          "label": "DrawerForm",
+          "value": "drawer_form"
+        }
+      ],
+      "dependsOn": "status"
+    },
+    {
+      "type": "boolean",
+      "name": "active"
+    },
+    {
+        "type": "float",
+        "name": "amount",
+        "precision": 4
+    },
+    {
+        "type": "integer",
+        "name": "quantity"
+    },
+    {
+        "type": "email",
+        "name": "Email"
+    },
+    {
+        "type": "many2one",
+        "name": "currency",
+        "model": "Currency",
+        "dependsOn": "layout"
+    }
+  ]

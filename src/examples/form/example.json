@@ -58,6 +58,10 @@
         "name": "category",
         "model": "Category",
         "dependsOn": "currency"
+    },
+    {
+      "type": "datetime",
+      "name": "created_at"
     }
   ]
 }

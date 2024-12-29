@@ -25,6 +25,13 @@ export interface IntegerField extends Field, RaizInputElement {
   type: "integer";
 }
 
+// DatetimeField
+//
+// Inherit HTMLInputElement
+export interface DatetimeField extends Field, RaizInputElement {
+  type: "datetime";
+}
+
 // FloatField
 //
 // Inherit HTMLInputElement
@@ -68,6 +75,7 @@ export type RaizField =
   | FloatField
   | IntegerField
   | BooleanField
+  | DatetimeField
   | EmailField
   | Many2oneField
   | SelectionField;

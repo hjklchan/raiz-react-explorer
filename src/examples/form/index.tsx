@@ -1,5 +1,6 @@
 import {
   Button,
+  DatePicker,
   Form,
   Input,
   InputNumber,
@@ -19,6 +20,7 @@ import { Selection } from "./components/Selection";
 import useForm from "@arco-design/web-react/es/Form/useForm";
 import { RaizField } from "./types";
 import Many2one from "./components/Many2one";
+import { Datetime } from "./components/Datetime";
 
 interface FormProps {
   fields: RaizField[];
@@ -66,9 +68,19 @@ export function ExampleForm(props: FormProps) {
   return (
     <Form form={form} initialValues={formInitialValues} onSubmit={formOnSubmit}>
       {fields.map((field) => {
+        // const label =
+        //   field.label ??
+        //   field.name.charAt(0).toUpperCase().concat(field.name.substring(1));
+
         const label =
           field.label ??
-          field.name.charAt(0).toUpperCase().concat(field.name.substring(1));
+          field.name
+            .split("_")
+            .map((value) => {
+              console.log(value);
+              return value.charAt(0).toUpperCase().concat(value.substring(1));
+            })
+            .join(" ");
 
         const fieldType = field.type;
 
@@ -149,6 +161,13 @@ export function ExampleForm(props: FormProps) {
                 <Input placeholder="TODO" />
               </Form.Item>
             );
+
+          case "datetime":
+            return (
+              <Form.Item key={field.name} field={field.name} label={label}>
+                <Datetime field={field} />
+              </Form.Item>
+            );
           default:
             return (
               <Button
@@ -174,4 +193,4 @@ export function ExampleForm(props: FormProps) {
       </Form.Item>
     </Form>
   );
-};
+}

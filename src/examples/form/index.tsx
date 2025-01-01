@@ -1,20 +1,14 @@
 import {
   Button,
-  DatePicker,
   Form,
+  FormItemProps,
   Input,
   InputNumber,
   Notification,
   Switch,
 } from "@arco-design/web-react";
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { IconRight } from "@arco-design/web-react/icon";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Varchar } from "./components/Varchar";
 import { Selection } from "./components/Selection";
 import useForm from "@arco-design/web-react/es/Form/useForm";
@@ -68,10 +62,6 @@ export function ExampleForm(props: FormProps) {
   return (
     <Form form={form} initialValues={formInitialValues} onSubmit={formOnSubmit}>
       {fields.map((field) => {
-        // const label =
-        //   field.label ??
-        //   field.name.charAt(0).toUpperCase().concat(field.name.substring(1));
-
         const label =
           field.label ??
           field.name
@@ -84,11 +74,17 @@ export function ExampleForm(props: FormProps) {
 
         const fieldType = field.type;
 
+        const formItemProps: FormItemProps = {
+          label,
+          field: field.name,
+          layout: "horizontal",
+        };
+
         switch (fieldType) {
           // Handle Varchar field
           case "varchar":
             return (
-              <Form.Item key={field.name} label={label} field={field.name}>
+              <Form.Item key={field.name} {...formItemProps}>
                 <Varchar field={field} onChange={(f, v) => onChange(f, v)} />
               </Form.Item>
             );
@@ -103,8 +99,7 @@ export function ExampleForm(props: FormProps) {
             return (
               <Form.Item
                 key={field.name}
-                label={label}
-                field={field.name}
+                {...formItemProps}
                 help={help()}
                 // 如果存在依赖字段
                 // 则该字段会被重新渲染一次
@@ -120,11 +115,22 @@ export function ExampleForm(props: FormProps) {
               }
             };
 
+            const jumpableLabel = () => {
+              return (
+                <>
+                  <Button type="outline" size="mini">
+                    {label}
+                    <IconRight style={{ color: "blue" }} />
+                  </Button>
+                </>
+              );
+            };
+
             return (
               <Form.Item
                 key={field.name}
-                label={label}
-                field={field.name}
+                {...formItemProps}
+                label={jumpableLabel()}
                 help={help()}
                 // 如果存在依赖字段
                 // 则该字段会被重新渲染一次
@@ -136,53 +142,55 @@ export function ExampleForm(props: FormProps) {
           // Handle Boolean field
           case "boolean":
             return (
-              <Form.Item key={field.name} field={field.name} label={label}>
+              <Form.Item key={field.name} {...formItemProps}>
                 <Switch />
               </Form.Item>
             );
           // Handle Float field
           case "float":
             return (
-              <Form.Item key={field.name} field={field.name} label={label}>
+              <Form.Item key={field.name} {...formItemProps}>
                 <InputNumber precision={field.precision} />
               </Form.Item>
             );
           // Handle Integer field
           case "integer":
             return (
-              <Form.Item key={field.name} field={field.name} label={label}>
+              <Form.Item key={field.name} {...formItemProps}>
                 <InputNumber precision={0} />
               </Form.Item>
             );
           // Handle Email field
           case "email":
             return (
-              <Form.Item key={field.name} field={field.name} label={label}>
+              <Form.Item key={field.name} {...formItemProps}>
                 <Input placeholder="TODO" />
               </Form.Item>
             );
-
+          // Handle Datetime field
           case "datetime":
             return (
-              <Form.Item key={field.name} field={field.name} label={label}>
-                <Datetime field={field} />
+              <Form.Item key={field.name} {...formItemProps}>
+                <Datetime field={field} onChange={onChange} />
               </Form.Item>
             );
           default:
             return (
-              <Button
-                type="text"
-                status="danger"
-                size="mini"
-                onClick={() => {
-                  Notification.error({
-                    title: "Error",
-                    content: `Unknown field type '${fieldType}'`,
-                  });
-                }}
-              >
-                Error
-              </Button>
+              <Form.Item key={0} label={label}>
+                <Button
+                  type="text"
+                  status="danger"
+                  size="mini"
+                  onClick={() => {
+                    Notification.error({
+                      title: "Error",
+                      content: `Unknown field type '${fieldType}'`,
+                    });
+                  }}
+                >
+                  Error
+                </Button>
+              </Form.Item>
             );
         }
       })}

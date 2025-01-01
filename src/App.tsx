@@ -37,7 +37,7 @@ function App() {
 
   return (
     <div style={{ width: "100%" }}>
-      <Row className="grid-demo" style={{ marginBottom: 16 }} gutter={24}>
+      <Row style={{ marginBottom: 16 }} gutter={24}>
         <Col span={12}>
           <Card style={{ height: "50vh" }}>
             <Input.TextArea

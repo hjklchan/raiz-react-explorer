@@ -1,5 +1,6 @@
 import {
   Button,
+  ColorPicker,
   Form,
   FormItemProps,
   Input,
@@ -7,6 +8,7 @@ import {
   Message,
   Notification,
   Switch,
+  Upload,
 } from "@arco-design/web-react";
 import { IconRight } from "@arco-design/web-react/icon";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -16,6 +18,8 @@ import useForm from "@arco-design/web-react/es/Form/useForm";
 import { RaizField } from "./types";
 import Many2one from "./components/Many2one";
 import { Datetime } from "./components/Datetime";
+import { File } from "./components/File";
+import { Picture } from "./components/Picture";
 
 interface FormProps {
   fields: RaizField[];
@@ -89,6 +93,20 @@ export function ExampleForm(props: FormProps) {
                 <Varchar field={field} onChange={(f, v) => onChange(f, v)} />
               </Form.Item>
             );
+          // Handle Text field
+          case "text":
+            return (
+              <Form.Item key={field.name} {...formItemProps}>
+                <Input.TextArea autoSize />
+              </Form.Item>
+            );
+          // Handle Color field
+          case "color":
+            return (
+              <Form.Item key={field.name} {...formItemProps}>
+                <ColorPicker />
+              </Form.Item>
+            );
           // Handle Selection field
           case "selection":
             var help = () => {
@@ -119,9 +137,13 @@ export function ExampleForm(props: FormProps) {
             const jumpableLabel = () => {
               return (
                 <>
-                  <Button type="text" size="mini" onClick={() => {
-                    Message.info(`will be redirect to ${field.model}Model`)
-                  }}>
+                  <Button
+                    type="text"
+                    size="mini"
+                    onClick={() => {
+                      Message.info(`will be redirect to ${field.model}Model`);
+                    }}
+                  >
                     {label}
                     <IconRight style={{ color: "blue" }} />
                   </Button>
@@ -177,6 +199,18 @@ export function ExampleForm(props: FormProps) {
                 <Datetime field={field} onChange={onChange} />
               </Form.Item>
             );
+          case "file":
+            return (
+              <Form.Item key={field.name} {...formItemProps}>
+                <File field={field} />
+              </Form.Item>
+            );
+          case "picture":
+            return (
+              <Form.Item key={field.name} {...formItemProps}>
+                <Picture field={field} />
+              </Form.Item>
+            )
           default:
             return (
               <Form.Item key={0} label={label}>

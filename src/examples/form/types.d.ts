@@ -1,4 +1,4 @@
-import { SelectProps } from "@arco-design/web-react";
+import { SelectProps, UploadProps } from "@arco-design/web-react";
 
 export interface Field {
   type: string;
@@ -16,6 +16,20 @@ export interface RaizSelectElement {
 // Inherit HTMLInputElement
 export interface VarcharField extends Field, RaizInputElement {
   type: "varchar";
+}
+
+// TextField
+//
+// Inherit HTMLInputElement
+export interface TextField extends Field, RaizInputElement {
+  type: "text";
+}
+
+// ColorField
+//
+// Inherit HTMLInputElement
+export interface ColorField extends Field, RaizInputElement {
+  type: "color";
 }
 
 // IntegerField
@@ -41,7 +55,7 @@ export interface FloatField extends Field, RaizInputElement {
 }
 
 // EmailField
-// 
+//
 // Inherit HTMLInputElement
 export interface EmailField extends Field, RaizInputElement {
   type: "email";
@@ -55,7 +69,7 @@ export interface BooleanField extends Field, RaizInputElement {
 }
 
 // SelectionField
-// 
+//
 // Inherit HTMLSelectElement
 export interface SelectionField extends Field, RaizSelectElement {
   type: "selection";
@@ -63,19 +77,43 @@ export interface SelectionField extends Field, RaizSelectElement {
 }
 
 // Many2oneField
-// 
+//
 // Inherit HTMLSelectElement
 export interface Many2oneField extends Field, RaizSelectElement {
   type: "many2one";
   model: string;
 }
 
+// FileField
+//
+// Inherit HTMLInputElement
+export interface FileField
+  extends Pick<UploadProps, "action">,
+    Field,
+    RaizInputElement {
+  type: "file";
+}
+
+// PictureField
+//
+// Inherit HTMLInputElement
+export interface PictureField
+  extends Pick<UploadProps, "action">,
+    Field,
+    RaizInputElement {
+  type: "picture";
+}
+
 export type RaizField =
   | VarcharField
+  | TextField
+  | ColorField
   | FloatField
   | IntegerField
   | BooleanField
   | DatetimeField
   | EmailField
   | Many2oneField
-  | SelectionField;
+  | SelectionField
+  | FileField
+  | PictureField;

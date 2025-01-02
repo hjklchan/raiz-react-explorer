@@ -21,19 +21,9 @@ function App() {
     if (debounceValue) {
       const formData = JSON.parse(debounceValue);
       console.log(formData.fields);
-      
       setFields(formData.fields);
     }
   }, [debounceValue]);
-
-  // const stringValueToJson = (stringValue: string) => {
-  //   const json = JSON.parse(stringValue);
-  //   console.log(json);
-
-  //   return json;
-  // }
-
-  // stringValueToJson(debounceValue);
 
   return (
     <div style={{ width: "100%" }}>

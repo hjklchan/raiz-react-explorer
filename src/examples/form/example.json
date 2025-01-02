@@ -66,6 +66,25 @@
     {
       "type": "date",
       "name": "deleted_at"
+    },
+    {
+      "type": "text",
+      "name": "description",
+      "label": "Description"
+    },
+    {
+      "type": "color",
+      "name": "color",
+      "label": "RGB"
+    },
+    {
+      "type": "file",
+      "name": "csr_document",
+      "label": "CSR Document"
+    },
+    {
+      "type": "picture",
+      "name": "logo"
     }
   ]
 }

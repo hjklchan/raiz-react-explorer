@@ -4,6 +4,7 @@ import {
   FormItemProps,
   Input,
   InputNumber,
+  Message,
   Notification,
   Switch,
 } from "@arco-design/web-react";
@@ -118,7 +119,9 @@ export function ExampleForm(props: FormProps) {
             const jumpableLabel = () => {
               return (
                 <>
-                  <Button type="outline" size="mini">
+                  <Button type="text" size="mini" onClick={() => {
+                    Message.info(`will be redirect to ${field.model}Model`)
+                  }}>
                     {label}
                     <IconRight style={{ color: "blue" }} />
                   </Button>

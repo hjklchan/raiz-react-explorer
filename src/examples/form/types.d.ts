@@ -3,7 +3,7 @@ import { SelectProps, UploadProps } from "@arco-design/web-react";
 export interface Form {
   layout: {
     // TODO
-  }
+  };
 }
 
 export interface Field {
@@ -11,9 +11,17 @@ export interface Field {
   name: string;
   label?: string;
   required?: boolean;
+  rules?: any;
 }
 
-export interface RaizInputElement {}
+type Expression= string | string[];
+
+export interface RaizInputElement {
+  // expression 1: "FIELD_NAME eq SOME_VALUE"
+  // expression 2: "FIELD_NAME == SOME_VALUE"
+  // expression 3: "FIELD_NAME is SOME_VALUE"
+  visible?: Expression;
+}
 export interface RaizSelectElement {
   dependsOn?: string;
 }
@@ -110,7 +118,9 @@ export interface PictureField
     Field,
     RaizInputElement {
   type: "picture";
-  imageTypes: string[] | string | "*";
+  properties?: {
+    types?: string[] | string | "*";
+  };
 }
 
 export type RaizField =

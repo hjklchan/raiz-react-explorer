@@ -84,7 +84,10 @@
     },
     {
       "type": "picture",
-      "name": "logo"
+      "name": "logo",
+      "properties": {
+        "types": ["jpeg", "png"]
+      }
     }
   ]
 }

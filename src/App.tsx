@@ -39,7 +39,7 @@ function App() {
         </Col>
         <Col span={12}>
           <Card style={{ height: "100%" }}>
-            <Typography.Title heading={3}>Json 动态表单字段</Typography.Title>
+            <Typography.Title heading={3}>Raiz Dynamic Form</Typography.Title>
             <Form fields={fields} />
           </Card>
         </Col>

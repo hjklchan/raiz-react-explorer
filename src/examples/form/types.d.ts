@@ -1,9 +1,16 @@
 import { SelectProps, UploadProps } from "@arco-design/web-react";
 
+export interface Form {
+  layout: {
+    // TODO
+  }
+}
+
 export interface Field {
   type: string;
   name: string;
   label?: string;
+  required?: boolean;
 }
 
 export interface RaizInputElement {}
@@ -92,16 +99,18 @@ export interface FileField
     Field,
     RaizInputElement {
   type: "file";
+  action: string;
 }
 
 // PictureField
 //
 // Inherit HTMLInputElement
 export interface PictureField
-  extends Pick<UploadProps, "action">,
+  extends Omit<FileField, "type">,
     Field,
     RaizInputElement {
   type: "picture";
+  imageTypes: string[] | string | "*";
 }
 
 export type RaizField =

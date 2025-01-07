@@ -8,8 +8,8 @@ import {
   Message,
   Notification,
   Switch,
-  Upload,
 } from "@arco-design/web-react";
+import * as utils from "../utils";
 import { IconRight } from "@arco-design/web-react/icon";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Varchar } from "./components/Varchar";
@@ -36,22 +36,23 @@ export function ExampleForm(props: FormProps) {
 
   const onChange = useCallback((f: string, v: any) => {
     form.setFieldValue(f, v);
-    console.log(`Field ${f} has been changed to ${v}`);
-    console.log(form.getFieldsValue());
   }, []);
 
-  const toDictValues = (
-    fields: Pick<RaizField, "name" | "type">[],
-    defaultValueFrom: (type: RaizField["type"]) => any
-  ) => {
-    let dict: { [field: string]: any } = {};
+  const toDictValues = useCallback(
+    (
+      fields: Pick<RaizField, "name" | "type">[],
+      defaultValueFrom: (type: RaizField["type"]) => any
+    ) => {
+      let dict: { [field: string]: any } = {};
 
-    fields.forEach((field) => {
-      dict[field.name] = defaultValueFrom(field.type);
-    });
+      fields.forEach((field) => {
+        dict[field.name] = defaultValueFrom(field.type);
+      });
 
-    return dict;
-  };
+      return dict;
+    },
+    []
+  );
 
   const formOnSubmit = (values: { [field: string]: any }) => {
     console.log("Form submit", values);
@@ -68,14 +69,7 @@ export function ExampleForm(props: FormProps) {
     <Form form={form} initialValues={formInitialValues} onSubmit={formOnSubmit}>
       {fields.map((field) => {
         const label =
-          field.label ??
-          field.name
-            .split("_")
-            .map((value) => {
-              console.log(value);
-              return value.charAt(0).toUpperCase().concat(value.substring(1));
-            })
-            .join(" ");
+          field.label ?? utils.Form.Conversion.upperCamel(field.name);
 
         const fieldType = field.type;
 
@@ -83,6 +77,7 @@ export function ExampleForm(props: FormProps) {
           label,
           field: field.name,
           layout: "horizontal",
+          rules: [{ required: field.required ?? false }],
         };
 
         switch (fieldType) {
@@ -210,10 +205,11 @@ export function ExampleForm(props: FormProps) {
               <Form.Item key={field.name} {...formItemProps}>
                 <Picture field={field} />
               </Form.Item>
-            )
+            );
           default:
+            let { name } = field;
             return (
-              <Form.Item key={0} label={label}>
+              <Form.Item key={`${name}-error`} label={label}>
                 <Button
                   type="text"
                   status="danger"

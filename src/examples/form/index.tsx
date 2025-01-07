@@ -15,7 +15,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Varchar } from "./components/Varchar";
 import { Selection } from "./components/Selection";
 import useForm from "@arco-design/web-react/es/Form/useForm";
-import { RaizField } from "./types";
+import { RaizForm, RaizField } from "./types";
 import Many2one from "./components/Many2one";
 import { Datetime } from "./components/Datetime";
 import { File } from "./components/File";
@@ -23,10 +23,13 @@ import { Picture } from "./components/Picture";
 
 interface FormProps {
   fields: RaizField[];
+  raizForm: RaizForm;
 }
 
 // FIXME - Could not Fast Refresh ("useFormContext" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
 export function ExampleForm(props: FormProps) {
+  // const { raizForm } = props;
+
   const [form] = useForm();
   const [fields, _] = useState<RaizField[]>(props.fields);
 

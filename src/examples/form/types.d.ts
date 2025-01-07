@@ -1,11 +1,5 @@
 import { SelectProps, UploadProps } from "@arco-design/web-react";
 
-export interface Form {
-  layout: {
-    // TODO
-  };
-}
-
 export interface Field {
   type: string;
   name: string;
@@ -14,7 +8,7 @@ export interface Field {
   rules?: any;
 }
 
-type Expression= string | string[];
+type Expression = string | string[];
 
 export interface RaizInputElement {
   // expression 1: "FIELD_NAME eq SOME_VALUE"
@@ -136,3 +130,10 @@ export type RaizField =
   | SelectionField
   | FileField
   | PictureField;
+
+export interface RaizForm {
+  layout: {
+    title?: string;
+    fields: RaizField[][] | RaizField[];
+  };
+}

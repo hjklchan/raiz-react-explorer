@@ -1,93 +1,103 @@
 {
-  "fields": [
-    { "type": "varchar", "name": "username", "required": true },
-    {
-      "type": "selection",
-      "name": "status",
-      "options": [
-        {
-          "label": "Open",
-          "value": "open"
-        },
-        {
-          "label": "Cancel",
-          "value": "cancel"
-        }
-      ]
-    },
-    {
-      "type": "selection",
-      "name": "layout",
-      "options": [
-        {
-          "label": "ModalForm",
-          "value": "model_form"
-        },
-        {
-          "label": "DrawerForm",
-          "value": "drawer_form"
-        }
-      ],
-      "dependsOn": "status"
-    },
-    {
-      "type": "boolean",
-      "name": "active"
-    },
-    {
+  "layout": [
+    [
+      { "type": "varchar", "name": "username", "required": true },
+      {
+        "type": "selection",
+        "name": "status",
+        "options": [
+          {
+            "label": "Open",
+            "value": "open"
+          },
+          {
+            "label": "Cancel",
+            "value": "cancel"
+          }
+        ]
+      }
+    ],
+    [
+      {
+        "type": "selection",
+        "name": "layout",
+        "options": [
+          {
+            "label": "ModalForm",
+            "value": "model_form"
+          },
+          {
+            "label": "DrawerForm",
+            "value": "drawer_form"
+          }
+        ],
+        "dependsOn": "status"
+      },
+      {
+        "type": "boolean",
+        "name": "active"
+      }
+    ],
+    [
+      {
         "type": "float",
         "name": "amount",
         "precision": 4
-    },
-    {
+      },
+      {
         "type": "integer",
         "name": "quantity"
-    },
-    {
+      },
+      {
         "type": "email",
         "name": "email"
-    },
-    {
+      },
+      {
         "type": "many2one",
         "name": "currency",
         "model": "Currency",
         "dependsOn": "layout"
-    },
-    {
+      }
+    ],
+    [
+      {
         "type": "many2one",
         "name": "category",
         "model": "Category",
         "dependsOn": "currency"
-    },
-    {
-      "type": "datetime",
-      "name": "created_at"
-    },
-    {
-      "type": "date",
-      "name": "deleted_at"
-    },
-    {
-      "type": "text",
-      "name": "description",
-      "label": "Description"
-    },
-    {
-      "type": "color",
-      "name": "color",
-      "label": "RGB"
-    },
-    {
-      "type": "file",
-      "name": "csr_document",
-      "label": "CSR Document"
-    },
-    {
-      "type": "picture",
-      "name": "logo",
-      "properties": {
-        "types": ["jpeg", "png"]
+      },
+      {
+        "type": "datetime",
+        "name": "created_at"
+      },
+      {
+        "type": "date",
+        "name": "deleted_at"
       }
-    }
+    ],
+    [
+      {
+        "type": "text",
+        "name": "description",
+        "label": "Description"
+      },
+      {
+        "type": "color",
+        "name": "color",
+        "label": "RGB"
+      },
+      {
+        "type": "file",
+        "name": "csr_document",
+        "label": "CSR Document"
+      },
+      {
+        "type": "picture",
+        "name": "logo",
+        "properties": {
+          "types": ["jpeg", "png"]
+        }
+      }
+    ]
   ]
 }

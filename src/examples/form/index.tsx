@@ -1,39 +1,31 @@
-import {
-  Button,
-  ColorPicker,
-  Form,
-  FormItemProps,
-  Input,
-  InputNumber,
-  Message,
-  Notification,
-  Switch,
-} from "@arco-design/web-react";
+import { Button, Form, Grid } from "@arco-design/web-react";
 import * as utils from "../utils";
-import { IconRight } from "@arco-design/web-react/icon";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Varchar } from "./components/Varchar";
-import { Selection } from "./components/Selection";
 import useForm from "@arco-design/web-react/es/Form/useForm";
 import { RaizForm, RaizField } from "./types";
-import Many2one from "./components/Many2one";
-import { Datetime } from "./components/Datetime";
-import { File } from "./components/File";
-import { Picture } from "./components/Picture";
+import FieldRenderer from "./components/FieldRenderer";
+
+const MAX_GUTTER = 24;
 
 interface FormProps {
-  fields: RaizField[];
-  raizForm: RaizForm;
+  // fields: RaizField[];
+  form: RaizForm;
 }
 
 // FIXME - Could not Fast Refresh ("useFormContext" export is incompatible). Learn more at https://github.com/vitejs/vite-plugin-react/tree/main/packages/plugin-react#consistent-components-exports
 export function ExampleForm(props: FormProps) {
-  // const { raizForm } = props;
+  const { form: raizForm } = props;
 
   const [form] = useForm();
-  const [fields, _] = useState<RaizField[]>(props.fields);
+  const [fields, _] = useState<RaizField[]>(
+    raizForm.layout.flatMap((field) => field)
+  );
 
   useEffect(() => {
+    raizForm.layout.flatMap((field) => {
+      console.log(field);
+    });
+
     console.log("Index has been (re-)loaded");
   }, []);
 
@@ -70,165 +62,25 @@ export function ExampleForm(props: FormProps) {
 
   return (
     <Form form={form} initialValues={formInitialValues} onSubmit={formOnSubmit}>
-      {fields.map((field) => {
-        const label =
-          field.label ?? utils.Form.Conversion.upperCamel(field.name);
+      {/* {fields.map((field) => {
+        return <FieldRenderer field={field} onChange={onChange} />;
+      })} */}
 
-        const fieldType = field.type;
+      {raizForm.layout.map((row) => {
+        const length = row.length;
+        const span = MAX_GUTTER / length;
 
-        const formItemProps: FormItemProps = {
-          label,
-          field: field.name,
-          layout: "horizontal",
-          rules: [{ required: field.required ?? false }],
-        };
-
-        switch (fieldType) {
-          // Handle Varchar field
-          case "varchar":
-            return (
-              <Form.Item key={field.name} {...formItemProps}>
-                <Varchar field={field} onChange={(f, v) => onChange(f, v)} />
-              </Form.Item>
-            );
-          // Handle Text field
-          case "text":
-            return (
-              <Form.Item key={field.name} {...formItemProps}>
-                <Input.TextArea autoSize />
-              </Form.Item>
-            );
-          // Handle Color field
-          case "color":
-            return (
-              <Form.Item key={field.name} {...formItemProps}>
-                <ColorPicker />
-              </Form.Item>
-            );
-          // Handle Selection field
-          case "selection":
-            var help = () => {
-              if (field.dependsOn) {
-                return `存在依赖字段 ${field.dependsOn}`;
-              }
-            };
-
-            return (
-              <Form.Item
-                key={field.name}
-                {...formItemProps}
-                help={help()}
-                // 如果存在依赖字段
-                // 则该字段会被重新渲染一次
-                shouldUpdate={field.dependsOn !== undefined}
-              >
-                <Selection field={field} onChange={(f, v) => onChange(f, v)} />
-              </Form.Item>
-            );
-          case "many2one":
-            var help = () => {
-              if (field.dependsOn) {
-                return `存在依赖字段 ${field.dependsOn}`;
-              }
-            };
-
-            const jumpableLabel = () => {
+        return (
+          <Grid.Row gutter={MAX_GUTTER}>
+            {row.map((field) => {
               return (
-                <>
-                  <Button
-                    type="text"
-                    size="mini"
-                    onClick={() => {
-                      Message.info(`will be redirect to ${field.model}Model`);
-                    }}
-                  >
-                    {label}
-                    <IconRight style={{ color: "blue" }} />
-                  </Button>
-                </>
+                <Grid.Col span={span}>
+                  <FieldRenderer field={field} onChange={onChange} />
+                </Grid.Col>
               );
-            };
-
-            return (
-              <Form.Item
-                key={field.name}
-                {...formItemProps}
-                label={jumpableLabel()}
-                help={help()}
-                // 如果存在依赖字段
-                // 则该字段会被重新渲染一次
-                shouldUpdate={field.dependsOn !== undefined}
-              >
-                <Many2one field={field} onChange={(f, v) => onChange(f, v)} />
-              </Form.Item>
-            );
-          // Handle Boolean field
-          case "boolean":
-            return (
-              <Form.Item key={field.name} {...formItemProps}>
-                <Switch />
-              </Form.Item>
-            );
-          // Handle Float field
-          case "float":
-            return (
-              <Form.Item key={field.name} {...formItemProps}>
-                <InputNumber precision={field.precision} />
-              </Form.Item>
-            );
-          // Handle Integer field
-          case "integer":
-            return (
-              <Form.Item key={field.name} {...formItemProps}>
-                <InputNumber precision={0} />
-              </Form.Item>
-            );
-          // Handle Email field
-          case "email":
-            return (
-              <Form.Item key={field.name} {...formItemProps}>
-                <Input placeholder="TODO" />
-              </Form.Item>
-            );
-          // Handle Datetime field
-          case "datetime":
-            return (
-              <Form.Item key={field.name} {...formItemProps}>
-                <Datetime field={field} onChange={onChange} />
-              </Form.Item>
-            );
-          case "file":
-            return (
-              <Form.Item key={field.name} {...formItemProps}>
-                <File field={field} />
-              </Form.Item>
-            );
-          case "picture":
-            return (
-              <Form.Item key={field.name} {...formItemProps}>
-                <Picture field={field} />
-              </Form.Item>
-            );
-          default:
-            let { name } = field;
-            return (
-              <Form.Item key={`${name}-error`} label={label}>
-                <Button
-                  type="text"
-                  status="danger"
-                  size="mini"
-                  onClick={() => {
-                    Notification.error({
-                      title: "Error",
-                      content: `Unknown field type '${fieldType}'`,
-                    });
-                  }}
-                >
-                  Error
-                </Button>
-              </Form.Item>
-            );
-        }
+            })}
+          </Grid.Row>
+        );
       })}
       <Form.Item>
         <Button type="primary" onClick={form.submit}>

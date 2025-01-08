@@ -6,7 +6,7 @@ import { HtmlAdapters } from "../../utils/adapter";
 
 interface Many2oneProps {
   field: Many2oneField;
-  onChange: (field: string, value: any) => void;
+  onChange?: (field: string, value: any) => void;
 }
 
 const Many2one = (props: Many2oneProps) => {
@@ -86,7 +86,9 @@ const Many2one = (props: Many2oneProps) => {
       }}
       options={options}
       loading={loading}
-      onChange={(value, _) => props.onChange(name, value)}
+      onChange={(value, _) =>
+        props.onChange ? props.onChange(name, value) : undefined
+      }
     />
   );
 };

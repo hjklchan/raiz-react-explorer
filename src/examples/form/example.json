@@ -15,9 +15,7 @@
             "value": "cancel"
           }
         ]
-      }
-    ],
-    [
+      },
       {
         "type": "selection",
         "name": "layout",
@@ -32,7 +30,9 @@
           }
         ],
         "dependsOn": "status"
-      },
+      }
+    ],
+    [
       {
         "type": "boolean",
         "name": "active"

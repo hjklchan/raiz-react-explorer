@@ -10,7 +10,7 @@ interface Many2oneProps {
 }
 
 const Many2one = (props: Many2oneProps) => {
-  const { name, dependsOn } = props.field;
+  const { name, dependsOn, dependency } = props.field;
   const { form } = useFormContext();
   const [loading, setLoading] = useState(false);
   const [options, setOptions] = useState<SelectProps["options"]>([]);
@@ -40,27 +40,6 @@ const Many2one = (props: Many2oneProps) => {
       .finally(() => {
         setLoading(false);
       });
-
-    // const options: SelectProps["options"] = [
-    //   {
-    //     label: "CNY",
-    //     value: "cny",
-    //   },
-    //   {
-    //     label: "USD",
-    //     value: "usd",
-    //   },
-    // ];
-
-    // if (delay_millisecond) {
-    //   // simulate a waiting request
-    //   // wait 3 seconds
-    //   setTimeout(() => {
-    //     setOptions(options);
-    //   }, delay_millisecond);
-    // } else {
-    //   setOptions(options);
-    // }
   };
 
   const checkDependency = (): boolean => {
@@ -68,6 +47,16 @@ const Many2one = (props: Many2oneProps) => {
     if (dependsOn) return (form.getFieldValue(dependsOn) as string).length > 0;
     return true;
   };
+
+  type querier = (url: string) => string;
+
+  // TODO: Feature - dependency field
+  const dep = (): querier => {
+
+    return (url: string) => {
+      return url;
+    }
+  }
 
   // checkProxy is used to debug the checkDependency function
   const checkProxy = (

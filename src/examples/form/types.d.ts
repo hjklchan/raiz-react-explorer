@@ -18,6 +18,13 @@ export interface RaizInputElement {
 }
 export interface RaizSelectElement {
   dependsOn?: string;
+  // TODO - Feature: new attribute 'dependency'
+  dependency?: {
+    field: string;
+    filter: {
+      param: string;
+    } | boolean;
+  };
 }
 
 // VarcharField
@@ -132,8 +139,6 @@ export type RaizField =
   | PictureField;
 
 export interface RaizForm {
-  layout: {
-    title?: string;
-    fields: RaizField[][] | RaizField[];
-  };
+  title?: string;
+  layout: RaizField[][];
 }
